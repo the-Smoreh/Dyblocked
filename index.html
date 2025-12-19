@@ -1,192 +1,174 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dyblocked | AAA Unblocked Games Hub</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dyblocked | Play 430+ Premium Unblocked Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-texture"></div>
-  <div class="bg-orb orb-a"></div>
-  <div class="bg-orb orb-b"></div>
-  <div class="bg-grid"></div>
-
-  <header class="top-nav">
+  <div class="bg-glow"></div>
+  <header class="topbar">
     <div class="brand">
-      <div class="brand-mark">Dy</div>
+      <div class="brand-icon">DB</div>
       <div>
         <div class="brand-name">Dyblocked</div>
-        <div class="brand-sub">Unblocked playground, AAA polish.</div>
+        <div class="brand-sub">Premium unblocked gaming</div>
       </div>
     </div>
-    <div class="nav-actions">
-      <button class="chip" id="featuredToggle" aria-pressed="false">Featured first</button>
-      <button class="chip" id="shuffleButton">Shuffle</button>
-      <a class="btn btn-ghost" href="#gameGrid">Browse library</a>
-      <button class="btn btn-primary" id="ctaPlay">Jump in</button>
-    </div>
+    <nav class="nav-actions">
+      <button class="btn ghost" id="featureToggle">
+        <span>Featured Mode</span>
+        <span class="pill pill-soft" id="featuredCount">0</span>
+      </button>
+      <button class="btn primary" id="randomPlay">Surprise Me</button>
+    </nav>
   </header>
 
-  <main>
+  <main class="shell">
     <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">430+ unblocked experiences — zero wait</p>
-        <h1>AAA-grade game lounge built for speed.</h1>
-        <p class="lede">Dyno-charged visuals, instant launches, and a curated spotlight that keeps the best titles within reach. Search, filter, and dive straight into immersive play.</p>
+      <div class="hero__copy">
+        <p class="eyebrow">430+ titles • lag-free • classroom safe</p>
+        <h1>Block nothing. Play everything.</h1>
+        <p class="lede">
+          Experience a cinema-grade arcade built for speed. Tap, search, and instantly jump into hundreds of immersive games—no installs, no friction.
+        </p>
         <div class="cta-row">
-          <button class="btn btn-primary" id="playSpotlight">Play spotlight</button>
-          <button class="btn btn-outline" id="randomPlay">Surprise me</button>
-          <div class="pill">Live + auto-refreshed data</div>
+          <button class="btn primary" id="startExploring">Start exploring</button>
+          <button class="btn ghost" id="scrollToGrid">Browse all games</button>
         </div>
-        <div class="metrics">
-          <div class="metric-card">
-            <div class="metric-value" id="metricCount">—</div>
-            <div class="metric-label">Games unlocked</div>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat-value" id="statTotal">430</div>
+            <div class="stat-label">Total games</div>
           </div>
-          <div class="metric-card">
-            <div class="metric-value" id="metricCategories">—</div>
-            <div class="metric-label">Distinct genres</div>
+          <div class="divider"></div>
+          <div class="stat">
+            <div class="stat-value" id="statCategories">0</div>
+            <div class="stat-label">Categories</div>
           </div>
-          <div class="metric-card">
-            <div class="metric-value" id="metricFeatured">—</div>
-            <div class="metric-label">Spotlight picks</div>
+          <div class="divider"></div>
+          <div class="stat">
+            <div class="stat-value" id="statFeatured">0</div>
+            <div class="stat-label">Premium picks</div>
           </div>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="visual-card">
-          <div class="visual-header">
-            <div>
-              <div class="pill pill-soft">Spotlight reel</div>
-              <p class="muted">Refreshes as you explore</p>
-            </div>
-            <button class="icon-btn" id="refreshSpotlight" aria-label="Refresh spotlight">⟳</button>
-          </div>
-          <div class="visual-feature" id="visualSpotlight">
-            <div class="skeleton">Loading spotlight…</div>
-          </div>
-          <div class="visual-footer">
-            <div>
-              <p class="muted tiny">Tap play to launch instantly in-page.</p>
-              <p class="muted tiny">Open in a new tab if an iframe is blocked.</p>
-            </div>
-            <button class="btn btn-ghost" id="openNewTab">Open in new tab</button>
+      <div class="hero__panel">
+        <div class="panel-glass">
+          <p class="panel-eyebrow">Live feed</p>
+          <div class="ticker" id="liveTicker"></div>
+          <div class="panel-cta">
+            <p>Jump back into the last three hits instantly.</p>
+            <div class="ticker-list" id="quickList"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="controls">
-      <div class="controls-row">
-        <label class="field">
-          <span>Search</span>
-          <div class="field-control">
-            <input id="searchInput" type="search" placeholder="Find by title, description, or tag" autocomplete="off">
-            <span class="input-icon">⌕</span>
+    <section class="filters" id="filters">
+      <div class="filter-main">
+        <label class="input">
+          <span class="input-label">Search</span>
+          <div class="input-shell">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10.5 14a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>
+            <input id="searchInput" type="text" placeholder="Search by title or description" />
           </div>
         </label>
-        <label class="field">
-          <span>Category</span>
-          <div class="field-control">
+        <label class="input">
+          <span class="input-label">Category</span>
+          <div class="input-shell select-shell">
             <select id="categorySelect"></select>
           </div>
         </label>
-        <label class="field">
-          <span>Sort</span>
-          <div class="field-control">
-            <select id="sortSelect">
-              <option value="curated">Curated</option>
-              <option value="az">Name A → Z</option>
-              <option value="za">Name Z → A</option>
-              <option value="category">Category</option>
-              <option value="random">Random</option>
-            </select>
-          </div>
+        <label class="input">
+          <span class="input-label">Tags</span>
+          <div class="tag-chips" id="tagChips"></div>
         </label>
-        <label class="field toggle">
-          <input id="featuredOnly" type="checkbox">
-          <span>Only spotlighted games</span>
-        </label>
-        <button class="btn btn-ghost" id="resetFilters">Reset</button>
       </div>
-      <div class="chip-row" id="tagRow"></div>
+      <div class="filter-actions">
+        <label class="toggle">
+          <input type="checkbox" id="onlyFeatured" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span>Show featured only</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="shuffleMode" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span>Shuffle grid</span>
+        </label>
+      </div>
     </section>
 
     <section class="featured">
-      <div class="section-heading">
+      <div class="section-head">
         <div>
-          <p class="eyebrow">Curated heat</p>
-          <h2>Spotlight carousel</h2>
+          <p class="eyebrow">Curated spotlight</p>
+          <h2>Elite picks &amp; most-played</h2>
         </div>
-        <div class="nav-buttons">
-          <button class="icon-btn" data-direction="-1">←</button>
-          <button class="icon-btn" data-direction="1">→</button>
+        <div class="section-actions">
+          <button class="btn ghost" id="refreshFeatured">Refresh picks</button>
         </div>
       </div>
-      <div class="featured-track" id="featuredTrack"></div>
+      <div class="featured-grid" id="featuredGrid"></div>
     </section>
 
     <section class="grid-section">
-      <div class="section-heading">
+      <div class="section-head">
         <div>
-          <p class="eyebrow">Total library</p>
-          <h2>All games</h2>
+          <p class="eyebrow">All titles</p>
+          <h2>Browse the entire catalog</h2>
         </div>
         <div class="section-actions">
-          <button class="chip" id="compactToggle" aria-pressed="false">Compact cards</button>
-          <button class="btn btn-primary" id="scrollTop">Back to top</button>
+          <span class="pill" id="resultCount">0 games</span>
         </div>
       </div>
-      <div class="game-grid" id="gameGrid"></div>
-      <div class="grid-footer">
-        <button class="btn btn-outline" id="loadMore">Load more</button>
-        <p class="muted tiny">We load in waves to keep things silky smooth.</p>
+      <div class="game-grid" id="gameGrid" aria-live="polite"></div>
+      <div class="empty" id="emptyState" hidden>
+        <p>No matches yet. Clear filters or try a different search.</p>
+        <button class="btn ghost" id="clearFilters">Reset filters</button>
       </div>
     </section>
   </main>
 
-  <div class="modal hidden" id="playerModal" role="dialog" aria-modal="true">
-    <div class="modal-shell">
-      <div class="modal-header">
-        <div>
-          <p class="pill pill-soft" id="modalCategory">Category</p>
-          <h3 id="modalTitle">Game title</h3>
-          <p class="muted" id="modalDesc">Description</p>
+  <div class="modal" id="gameModal" aria-hidden="true">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button class="modal-close" id="closeModal" aria-label="Close">
+        <span>&times;</span>
+      </button>
+      <div class="modal-content">
+        <div class="modal-info">
+          <p class="eyebrow" id="modalCategory"></p>
+          <h3 id="modalTitle"></h3>
+          <p class="modal-description" id="modalDescription"></p>
+          <div class="modal-tags" id="modalTags"></div>
+          <div class="modal-actions">
+            <a class="btn primary" id="playNow" target="_blank" rel="noreferrer noopener">Play in new tab</a>
+            <button class="btn ghost" id="openInFrame">Play here</button>
+          </div>
         </div>
-        <div class="modal-actions">
-          <button class="btn btn-ghost" id="openExternal">Open in new tab</button>
-          <button class="icon-btn" id="closeModal" aria-label="Close">✕</button>
+        <div class="modal-frame" id="frameContainer">
+          <div class="frame-placeholder">Select "Play here" to embed instantly.</div>
         </div>
-      </div>
-      <div class="modal-body">
-        <iframe id="gameFrame" title="Game player" loading="lazy"></iframe>
       </div>
     </div>
   </div>
 
-  <div id="toast" class="toast hidden">Message</div>
-
-  <footer>
-    <div class="footer-content">
+  <footer class="footer">
+    <div class="brand">
+      <div class="brand-icon">DB</div>
       <div>
-        <div class="brand-mark">Dy</div>
-        <div>
-          <p class="brand-name">Dyblocked</p>
-          <p class="muted tiny">Always-on curation, premium feel.</p>
-        </div>
-      </div>
-      <div class="footer-actions">
-        <button class="chip" id="quickFeatured">View featured</button>
-        <button class="chip" id="quickArcade">Arcade</button>
-        <button class="chip" id="quickStrategy">Strategy</button>
+        <div class="brand-name">Dyblocked</div>
+        <div class="brand-sub">School-safe, unstoppable.</div>
       </div>
     </div>
+    <p>Built for performance, privacy, and aesthetic perfection.</p>
   </footer>
 
-  <script type="module" src="assets/js/app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
