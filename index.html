@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dyblocked | Play 430+ Premium Unblocked Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">DB</div>
+      <div>
+        <div class="brand-name">Dyblocked</div>
+        <div class="brand-sub">Premium unblocked gaming</div>
+      </div>
+    </div>
+    <nav class="nav-actions">
+      <button class="btn ghost" id="featureToggle">
+        <span>Featured Mode</span>
+        <span class="pill pill-soft" id="featuredCount">0</span>
+      </button>
+      <button class="btn primary" id="randomPlay">Surprise Me</button>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">430+ titles • lag-free • classroom safe</p>
+        <h1>Block nothing. Play everything.</h1>
+        <p class="lede">
+          Experience a cinema-grade arcade built for speed. Tap, search, and instantly jump into hundreds of immersive games—no installs, no friction.
+        </p>
+        <div class="cta-row">
+          <button class="btn primary" id="startExploring">Start exploring</button>
+          <button class="btn ghost" id="scrollToGrid">Browse all games</button>
+        </div>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat-value" id="statTotal">430</div>
+            <div class="stat-label">Total games</div>
+          </div>
+          <div class="divider"></div>
+          <div class="stat">
+            <div class="stat-value" id="statCategories">0</div>
+            <div class="stat-label">Categories</div>
+          </div>
+          <div class="divider"></div>
+          <div class="stat">
+            <div class="stat-value" id="statFeatured">0</div>
+            <div class="stat-label">Premium picks</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__panel">
+        <div class="panel-glass">
+          <p class="panel-eyebrow">Live feed</p>
+          <div class="ticker" id="liveTicker"></div>
+          <div class="panel-cta">
+            <p>Jump back into the last three hits instantly.</p>
+            <div class="ticker-list" id="quickList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="filters" id="filters">
+      <div class="filter-main">
+        <label class="input">
+          <span class="input-label">Search</span>
+          <div class="input-shell">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10.5 14a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>
+            <input id="searchInput" type="text" placeholder="Search by title or description" />
+          </div>
+        </label>
+        <label class="input">
+          <span class="input-label">Category</span>
+          <div class="input-shell select-shell">
+            <select id="categorySelect"></select>
+          </div>
+        </label>
+        <label class="input">
+          <span class="input-label">Tags</span>
+          <div class="tag-chips" id="tagChips"></div>
+        </label>
+      </div>
+      <div class="filter-actions">
+        <label class="toggle">
+          <input type="checkbox" id="onlyFeatured" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span>Show featured only</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="shuffleMode" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span>Shuffle grid</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="featured">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Curated spotlight</p>
+          <h2>Elite picks &amp; most-played</h2>
+        </div>
+        <div class="section-actions">
+          <button class="btn ghost" id="refreshFeatured">Refresh picks</button>
+        </div>
+      </div>
+      <div class="featured-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="grid-section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">All titles</p>
+          <h2>Browse the entire catalog</h2>
+        </div>
+        <div class="section-actions">
+          <span class="pill" id="resultCount">0 games</span>
+        </div>
+      </div>
+      <div class="game-grid" id="gameGrid" aria-live="polite"></div>
+      <div class="empty" id="emptyState" hidden>
+        <p>No matches yet. Clear filters or try a different search.</p>
+        <button class="btn ghost" id="clearFilters">Reset filters</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="gameModal" aria-hidden="true">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button class="modal-close" id="closeModal" aria-label="Close">
+        <span>&times;</span>
+      </button>
+      <div class="modal-content">
+        <div class="modal-info">
+          <p class="eyebrow" id="modalCategory"></p>
+          <h3 id="modalTitle"></h3>
+          <p class="modal-description" id="modalDescription"></p>
+          <div class="modal-tags" id="modalTags"></div>
+          <div class="modal-actions">
+            <a class="btn primary" id="playNow" target="_blank" rel="noreferrer noopener">Play in new tab</a>
+            <button class="btn ghost" id="openInFrame">Play here</button>
+          </div>
+        </div>
+        <div class="modal-frame" id="frameContainer">
+          <div class="frame-placeholder">Select "Play here" to embed instantly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="brand">
+      <div class="brand-icon">DB</div>
+      <div>
+        <div class="brand-name">Dyblocked</div>
+        <div class="brand-sub">School-safe, unstoppable.</div>
+      </div>
+    </div>
+    <p>Built for performance, privacy, and aesthetic perfection.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
