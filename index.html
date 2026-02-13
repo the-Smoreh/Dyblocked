@@ -11,7 +11,7 @@
 </head>
 <body>
   <div class="bg-glow"></div>
-  <header class="topbar">
+  <header class="topbar" id="topbar">
     <div class="brand">
       <div class="brand-icon">DB</div>
       <div>
@@ -24,9 +24,55 @@
         <span>Featured Mode</span>
         <span class="pill pill-soft" id="featuredCount">0</span>
       </button>
+      <button class="btn ghost" id="openSettings">Customize</button>
       <button class="btn primary" id="randomPlay">Surprise Me</button>
     </nav>
   </header>
+
+  <aside class="settings-panel" id="settingsPanel" aria-hidden="true">
+    <div class="settings-head">
+      <div>
+        <p class="eyebrow">AAA personalization</p>
+        <h2>Experience settings</h2>
+      </div>
+      <button class="modal-close" id="closeSettings" aria-label="Close settings"><span>&times;</span></button>
+    </div>
+    <div class="settings-grid">
+      <label class="input">
+        <span class="input-label">Card layout</span>
+        <div class="input-shell select-shell"><select id="layoutMode">
+          <option value="cozy">Cozy</option>
+          <option value="compact">Compact</option>
+          <option value="spread">Spread</option>
+        </select></div>
+      </label>
+      <label class="input">
+        <span class="input-label">Icon style</span>
+        <div class="input-shell select-shell"><select id="iconStyle">
+          <option value="default">Classic cover</option>
+          <option value="squircle">Apple squircle (image only)</option>
+          <option value="gradient">Gradient preset icons</option>
+        </select></div>
+      </label>
+      <label class="input">
+        <span class="input-label">Icon gradient preset</span>
+        <div class="input-shell select-shell"><select id="iconGradient">
+          <option value="sunset">Sunset pop</option>
+          <option value="aurora">Aurora bloom</option>
+          <option value="ocean">Ocean neon</option>
+        </select></div>
+      </label>
+      <label class="input">
+        <span class="input-label">Main color theme</span>
+        <div class="input-shell select-shell"><select id="themeMode">
+          <option value="nebula">Nebula purple</option>
+          <option value="ember">Ember orange</option>
+          <option value="mint">Mint frost</option>
+          <option value="royal">Royal blue</option>
+        </select></div>
+      </label>
+    </div>
+  </aside>
 
   <main class="shell">
     <section class="hero">
@@ -134,27 +180,20 @@
     </section>
   </main>
 
-  <div class="modal" id="gameModal" aria-hidden="true">
+  <div class="modal immersive" id="gameModal" aria-hidden="true">
     <div class="modal-overlay" id="modalOverlay"></div>
     <div class="modal-card" role="dialog" aria-modal="true">
-      <button class="modal-close" id="closeModal" aria-label="Close">
-        <span>&times;</span>
-      </button>
-      <div class="modal-content">
-        <div class="modal-info">
+      <div class="immersive-bar">
+        <div>
           <p class="eyebrow" id="modalCategory"></p>
           <h3 id="modalTitle"></h3>
-          <p class="modal-description" id="modalDescription"></p>
-          <div class="modal-tags" id="modalTags"></div>
-          <div class="modal-actions">
-            <a class="btn primary" id="playNow" target="_blank" rel="noreferrer noopener">Play in new tab</a>
-            <button class="btn ghost" id="openInFrame">Play here</button>
-          </div>
         </div>
-        <div class="modal-frame" id="frameContainer">
-          <div class="frame-placeholder">Select "Play here" to embed instantly.</div>
+        <div class="immersive-actions">
+          <button class="btn ghost" id="immersiveFullscreen">Fullscreen</button>
+          <button class="btn ghost" id="closeModal">Close</button>
         </div>
       </div>
+      <div class="modal-frame" id="frameContainer"></div>
     </div>
   </div>
 
