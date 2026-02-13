@@ -20,16 +20,29 @@ const randomPlay = document.getElementById('randomPlay');
 const refreshFeatured = document.getElementById('refreshFeatured');
 const startExploring = document.getElementById('startExploring');
 const scrollToGrid = document.getElementById('scrollToGrid');
+const topbar = document.getElementById('topbar');
+const openSettings = document.getElementById('openSettings');
+const closeSettings = document.getElementById('closeSettings');
+const settingsPanel = document.getElementById('settingsPanel');
+const layoutMode = document.getElementById('layoutMode');
+const iconStyle = document.getElementById('iconStyle');
+const iconGradient = document.getElementById('iconGradient');
+const themeMode = document.getElementById('themeMode');
+
 const modal = document.getElementById('gameModal');
 const modalOverlay = document.getElementById('modalOverlay');
 const closeModal = document.getElementById('closeModal');
 const modalTitle = document.getElementById('modalTitle');
 const modalCategory = document.getElementById('modalCategory');
-const modalDescription = document.getElementById('modalDescription');
-const modalTags = document.getElementById('modalTags');
-const playNow = document.getElementById('playNow');
-const openInFrame = document.getElementById('openInFrame');
+const immersiveFullscreen = document.getElementById('immersiveFullscreen');
 const frameContainer = document.getElementById('frameContainer');
+
+const themePresets = {
+  nebula: { primary: '#8f6bff', secondary: '#49d2ff', accent: '#4af4c7' },
+  ember: { primary: '#ff7b4a', secondary: '#ffc14a', accent: '#ffd56f' },
+  mint: { primary: '#4ecdc4', secondary: '#9dfca7', accent: '#88fff2' },
+  royal: { primary: '#4d86ff', secondary: '#7cc4ff', accent: '#6be4ff' }
+};
 
 const state = {
   games: [],
@@ -37,7 +50,12 @@ const state = {
   tags: [],
   categories: [],
   featured: [],
-  lastOpened: []
+  settings: {
+    layout: 'cozy',
+    iconStyle: 'default',
+    iconGradient: 'sunset',
+    theme: 'nebula'
+  }
 };
 
 async function loadGames() {
@@ -73,10 +91,17 @@ function populateFilters() {
   });
 }
 
+function iconShell(game) {
+  if (state.settings.iconStyle === 'gradient') {
+    return `<div class="card-gradient gradient-${state.settings.iconGradient}"><span>${game.title.slice(0, 2).toUpperCase()}</span></div>`;
+  }
+  return `<img src="${game.game_image_icon}" alt="${game.title}" loading="lazy" />`;
+}
+
 function cardTemplate(game) {
   const tags = (game.tags || []).slice(0, 3).map((t) => `<span>${t}</span>`).join('');
-  return `<article class="card" tabindex="0" data-title="${game.title}" data-url="${game.url}">
-    <img src="${game.game_image_icon}" alt="${game.title}" loading="lazy" />
+  return `<article class="card" tabindex="0" data-title="${game.title}">
+    <div class="card-media">${iconShell(game)}</div>
     <div class="info">
       <div class="meta"><span class="badge">${game.category || 'Arcade'}</span>${game.featured ? '<span class="badge">Featured</span>' : ''}</div>
       <h3>${game.title}</h3>
@@ -87,8 +112,8 @@ function cardTemplate(game) {
 }
 
 function featuredTemplate(game) {
-  return `<article class="feature-card" data-title="${game.title}" data-url="${game.url}">
-      <img src="${game.game_image_icon}" alt="${game.title}" loading="lazy" />
+  return `<article class="feature-card" data-title="${game.title}">
+      <div class="card-media">${iconShell(game)}</div>
       <div class="content">
         <span class="tagline">${game.category || 'Arcade'}</span>
         <h3>${game.title}</h3>
@@ -174,26 +199,18 @@ function openModal(title) {
   if (!game) return;
   modalTitle.textContent = game.title;
   modalCategory.textContent = game.category || 'Arcade';
-  modalDescription.textContent = game.description || 'Play instantly in your browser.';
-  modalTags.innerHTML = (game.tags || []).map((tag) => `<span>${tag}</span>`).join('');
-  playNow.href = game.url;
-  frameContainer.innerHTML = '<div class="frame-placeholder">Select "Play here" to embed instantly.</div>';
-  modal.dataset.url = game.url;
+  frameContainer.innerHTML = `<iframe src="${game.url}" allowfullscreen></iframe>`;
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
-  state.lastOpened = [game.title, ...state.lastOpened.filter((t) => t !== game.title)].slice(0, 3);
 }
 
 function closeGameModal() {
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
-  frameContainer.innerHTML = '<div class="frame-placeholder">Select "Play here" to embed instantly.</div>';
-}
-
-function embedGame() {
-  const url = modal.dataset.url;
-  if (!url) return;
-  frameContainer.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+  frameContainer.innerHTML = '';
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  }
 }
 
 function surpriseMe() {
@@ -207,6 +224,29 @@ function refreshFeaturedDeck() {
   statFeatured.textContent = state.featured.length;
   featuredCount.textContent = state.featured.length;
   renderFeatured();
+}
+
+function applyTheme() {
+  const preset = themePresets[state.settings.theme];
+  document.documentElement.style.setProperty('--primary', preset.primary);
+  document.documentElement.style.setProperty('--primary-2', preset.secondary);
+  document.documentElement.style.setProperty('--accent', preset.accent);
+}
+
+function applyPresentationSettings() {
+  document.body.dataset.layout = state.settings.layout;
+  document.body.dataset.iconStyle = state.settings.iconStyle;
+  renderGrid();
+  renderFeatured();
+}
+
+function updateTopbarHeight() {
+  document.documentElement.style.setProperty('--topbar-height', `${topbar.offsetHeight}px`);
+}
+
+function toggleSettings(open) {
+  settingsPanel.classList.toggle('open', open);
+  settingsPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
 }
 
 function attachEvents() {
@@ -230,17 +270,55 @@ function attachEvents() {
     tagChips.querySelectorAll('.chip').forEach((chip) => chip.classList.remove('active'));
     applyFilters();
   });
+  openSettings.addEventListener('click', () => toggleSettings(true));
+  closeSettings.addEventListener('click', () => toggleSettings(false));
   modalOverlay.addEventListener('click', closeGameModal);
   closeModal.addEventListener('click', closeGameModal);
-  openInFrame.addEventListener('click', embedGame);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeGameModal();
+  immersiveFullscreen.addEventListener('click', async () => {
+    const modalCard = modal.querySelector('.modal-card');
+    if (!document.fullscreenElement) {
+      await modalCard.requestFullscreen();
+    } else {
+      await document.exitFullscreen();
+    }
   });
+
+  layoutMode.addEventListener('change', () => {
+    state.settings.layout = layoutMode.value;
+    applyPresentationSettings();
+  });
+
+  iconStyle.addEventListener('change', () => {
+    state.settings.iconStyle = iconStyle.value;
+    applyPresentationSettings();
+  });
+
+  iconGradient.addEventListener('change', () => {
+    state.settings.iconGradient = iconGradient.value;
+    applyPresentationSettings();
+  });
+
+  themeMode.addEventListener('change', () => {
+    state.settings.theme = themeMode.value;
+    applyTheme();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeGameModal();
+      toggleSettings(false);
+    }
+  });
+
+  window.addEventListener('resize', updateTopbarHeight);
 }
 
 (async function init() {
   attachEvents();
   await loadGames();
+  applyTheme();
+  applyPresentationSettings();
   updateTicker();
+  updateTopbarHeight();
   setInterval(updateTicker, 8000);
 })();
