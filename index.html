@@ -3,210 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dyblocked | Play 430+ Premium Unblocked Games</title>
+  <title>Dyblocked | Blackhole Gaming Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-glow"></div>
-  <header class="topbar" id="topbar">
-    <div class="brand">
-      <div class="brand-icon">DB</div>
-      <div>
-        <div class="brand-name">Dyblocked</div>
-        <div class="brand-sub">Premium unblocked gaming</div>
-      </div>
+  <canvas id="blackholeCanvas" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="hud">
+    <div class="player-meta">
+      <p class="label">Gamertag</p>
+      <h1>Dyblocked // Event Horizon</h1>
     </div>
-    <nav class="nav-actions">
-      <button class="btn ghost" id="featureToggle">
-        <span>Featured Mode</span>
-        <span class="pill pill-soft" id="featuredCount">0</span>
-      </button>
-      <button class="btn ghost" id="openSettings">Customize</button>
-      <button class="btn primary" id="randomPlay">Surprise Me</button>
-    </nav>
+    <div class="hud-actions">
+      <button class="hud-btn">SKIN</button>
+      <button class="hud-btn" id="focusLibrary">LIBRARY</button>
+      <button class="hud-btn">ALERTS</button>
+    </div>
   </header>
 
-  <aside class="settings-panel" id="settingsPanel" aria-hidden="true">
-    <div class="settings-head">
-      <div>
-        <p class="eyebrow">AAA personalization</p>
-        <h2>Experience settings</h2>
-      </div>
-      <button class="modal-close" id="closeSettings" aria-label="Close settings"><span>&times;</span></button>
-    </div>
-    <div class="settings-grid">
-      <label class="input">
-        <span class="input-label">Card layout</span>
-        <div class="input-shell select-shell"><select id="layoutMode">
-          <option value="cozy">Cozy</option>
-          <option value="compact">Compact</option>
-          <option value="spread">Spread</option>
-        </select></div>
-      </label>
-      <label class="input">
-        <span class="input-label">Icon style</span>
-        <div class="input-shell select-shell"><select id="iconStyle">
-          <option value="default">Classic cover</option>
-          <option value="squircle">Apple squircle (image only)</option>
-          <option value="gradient">Gradient preset icons</option>
-        </select></div>
-      </label>
-      <label class="input">
-        <span class="input-label">Icon gradient preset</span>
-        <div class="input-shell select-shell"><select id="iconGradient">
-          <option value="sunset">Sunset pop</option>
-          <option value="aurora">Aurora bloom</option>
-          <option value="ocean">Ocean neon</option>
-        </select></div>
-      </label>
-      <label class="input">
-        <span class="input-label">Main color theme</span>
-        <div class="input-shell select-shell"><select id="themeMode">
-          <option value="nebula">Nebula purple</option>
-          <option value="ember">Ember orange</option>
-          <option value="mint">Mint frost</option>
-          <option value="royal">Royal blue</option>
-        </select></div>
-      </label>
-    </div>
-  </aside>
+  <main class="layout">
+    <section class="intro-card">
+      <p class="eyebrow">Intro Sequence</p>
+      <h2>Welcome to the remastered Dyblocked launch bay.</h2>
+      <p>
+        Inspired by your reference look, this UI recreates that deep-space black-hole menu vibe and turns it into a playable games control center.
+      </p>
+      <button id="enterPortal" class="play-btn">Enter Portal</button>
+    </section>
 
-  <main class="shell">
-    <section class="hero">
-      <div class="hero__copy">
-        <p class="eyebrow">430+ titles • lag-free • classroom safe</p>
-        <h1>Block nothing. Play everything.</h1>
-        <p class="lede">
-          Experience a cinema-grade arcade built for speed. Tap, search, and instantly jump into hundreds of immersive games—no installs, no friction.
-        </p>
-        <div class="cta-row">
-          <button class="btn primary" id="startExploring">Start exploring</button>
-          <button class="btn ghost" id="scrollToGrid">Browse all games</button>
-        </div>
-        <div class="stat-row">
-          <div class="stat">
-            <div class="stat-value" id="statTotal">430</div>
-            <div class="stat-label">Total games</div>
-          </div>
-          <div class="divider"></div>
-          <div class="stat">
-            <div class="stat-value" id="statCategories">0</div>
-            <div class="stat-label">Categories</div>
-          </div>
-          <div class="divider"></div>
-          <div class="stat">
-            <div class="stat-value" id="statFeatured">0</div>
-            <div class="stat-label">Premium picks</div>
-          </div>
-        </div>
+    <section class="play-panel">
+      <div class="play-heading">
+        <p class="eyebrow">Play instantly</p>
+        <h3>Game Library Link</h3>
       </div>
-      <div class="hero__panel">
-        <div class="panel-glass">
-          <p class="panel-eyebrow">Live feed</p>
-          <div class="ticker" id="liveTicker"></div>
-          <div class="panel-cta">
-            <p>Jump back into the last three hits instantly.</p>
-            <div class="ticker-list" id="quickList"></div>
-          </div>
-        </div>
+      <div class="library-controls" id="librarySection">
+        <input id="libraryInput" type="url" placeholder="Paste your game library link" />
+        <button id="loadLibrary" class="hud-btn solid">Load</button>
+      </div>
+      <p class="helper">Loads your link immediately in the live frame below so players can jump in off the bat.</p>
+      <div class="live-frame">
+        <iframe id="instantFrame" title="Live library player" allowfullscreen loading="lazy"></iframe>
       </div>
     </section>
 
-    <section class="filters" id="filters">
-      <div class="filter-main">
-        <label class="input">
-          <span class="input-label">Search</span>
-          <div class="input-shell">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10.5 14a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>
-            <input id="searchInput" type="text" placeholder="Search by title or description" />
-          </div>
-        </label>
-        <label class="input">
-          <span class="input-label">Category</span>
-          <div class="input-shell select-shell">
-            <select id="categorySelect"></select>
-          </div>
-        </label>
-        <label class="input">
-          <span class="input-label">Tags</span>
-          <div class="tag-chips" id="tagChips"></div>
-        </label>
-      </div>
-      <div class="filter-actions">
-        <label class="toggle">
-          <input type="checkbox" id="onlyFeatured" />
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          <span>Show featured only</span>
-        </label>
-        <label class="toggle">
-          <input type="checkbox" id="shuffleMode" />
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          <span>Shuffle grid</span>
-        </label>
-      </div>
-    </section>
-
-    <section class="featured">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Curated spotlight</p>
-          <h2>Elite picks &amp; most-played</h2>
-        </div>
-        <div class="section-actions">
-          <button class="btn ghost" id="refreshFeatured">Refresh picks</button>
-        </div>
-      </div>
-      <div class="featured-grid" id="featuredGrid"></div>
-    </section>
-
-    <section class="grid-section">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">All titles</p>
-          <h2>Browse the entire catalog</h2>
-        </div>
-        <div class="section-actions">
-          <span class="pill" id="resultCount">0 games</span>
-        </div>
-      </div>
-      <div class="game-grid" id="gameGrid" aria-live="polite"></div>
-      <div class="empty" id="emptyState" hidden>
-        <p>No matches yet. Clear filters or try a different search.</p>
-        <button class="btn ghost" id="clearFilters">Reset filters</button>
-      </div>
-    </section>
+    <aside class="queue-panel">
+      <p class="eyebrow">Quick jump</p>
+      <h3>Featured Game Dock</h3>
+      <div id="gameRail" class="game-rail"></div>
+    </aside>
   </main>
 
-  <div class="modal immersive" id="gameModal" aria-hidden="true">
-    <div class="modal-overlay" id="modalOverlay"></div>
-    <div class="modal-card" role="dialog" aria-modal="true">
-      <div class="immersive-bar">
-        <div>
-          <p class="eyebrow" id="modalCategory"></p>
-          <h3 id="modalTitle"></h3>
-        </div>
-        <div class="immersive-actions">
-          <button class="btn ghost" id="immersiveFullscreen">Fullscreen</button>
-          <button class="btn ghost" id="closeModal">Close</button>
-        </div>
-      </div>
-      <div class="modal-frame" id="frameContainer"></div>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <div class="brand">
-      <div class="brand-icon">DB</div>
-      <div>
-        <div class="brand-name">Dyblocked</div>
-        <div class="brand-sub">School-safe, unstoppable.</div>
-      </div>
-    </div>
-    <p>Built for performance, privacy, and aesthetic perfection.</p>
-  </footer>
+  <nav class="bottom-dock">
+    <button>Marketplace</button>
+    <button>Achievements</button>
+    <button>Dressing Room</button>
+    <button>Realms</button>
+    <button class="active">Games</button>
+    <span id="onlineCount">0 players online</span>
+  </nav>
 
   <script src="script.js"></script>
 </body>
