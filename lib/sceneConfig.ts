@@ -1,34 +1,36 @@
-import { NarrativeSection } from '@/lib/types';
+import { PlanetConfig } from '@/lib/types';
 
-export const sections: NarrativeSection[] = [
+export const gamePlanets: PlanetConfig[] = [
   {
-    id: 'surface',
-    eyebrow: 'Chapter 01',
-    title: 'You begin on a frozen surface',
-    body: 'A bright arctic plain opens up with a carved ice ring revealing a cave entrance below.'
+    id: 'aurora-drift',
+    label: 'Aurora Drift',
+    position: [10, 1.2, -7],
+    radius: 1.05,
+    colorA: '#73f6ff',
+    colorB: '#7f8dff'
   },
   {
-    id: 'approach',
-    eyebrow: 'Chapter 02',
-    title: 'The opening starts to pull you in',
-    body: 'As the camera lowers, the rim catches the light and the tunnel depth becomes visible.'
+    id: 'nebula-core',
+    label: 'Nebula Core',
+    position: [14, -0.8, -1.8],
+    radius: 1.2,
+    colorA: '#7ad6ff',
+    colorB: '#9e7dff'
   },
   {
-    id: 'descent',
-    eyebrow: 'Chapter 03',
-    title: 'Descend through the ice shaft',
-    body: 'Particles and glacial reflections build motion as you transition from surface daylight to cave glow.'
+    id: 'glacier-run',
+    label: 'Glacier Run',
+    position: [9, -1.4, 4.5],
+    radius: 0.95,
+    colorA: '#85efff',
+    colorB: '#6f9cff'
   },
   {
-    id: 'chamber',
-    eyebrow: 'Chapter 04',
-    title: 'Enter an illuminated ice chamber',
-    body: 'Inside the cave, crystal forms and translucent walls keep the room bright and atmospheric.'
-  },
-  {
-    id: 'cta',
-    eyebrow: 'Final frame',
-    title: 'Fully inside the world',
-    body: 'The final orbit settles in the chamber so the full environment reads as one continuous journey.'
+    id: 'ion-vault',
+    label: 'Ion Vault',
+    position: [4, 0.5, 2.6],
+    radius: 1.15,
+    colorA: '#74f1ff',
+    colorB: '#9f7cff'
   }
 ];

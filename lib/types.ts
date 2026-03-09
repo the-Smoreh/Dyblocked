@@ -8,6 +8,15 @@ export type NarrativeSection = {
   body: string;
 };
 
+export type PlanetConfig = {
+  id: string;
+  label: string;
+  position: [number, number, number];
+  radius: number;
+  colorA: string;
+  colorB: string;
+};
+
 export type SceneRefs = {
   sculptureRoot: React.MutableRefObject<THREE.Group | null>;
   innerCluster: React.MutableRefObject<THREE.Group | null>;
