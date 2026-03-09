@@ -1,15 +1,15 @@
 import { CameraKeyframe } from '@/lib/types';
 
 export const cameraKeyframes: CameraKeyframe[] = [
-  { label: 'intro', position: [0, 0.8, 7.2], target: [0, 0, 0], at: 0 },
-  { label: 'left-sweep', position: [-2.8, 1.6, 5.8], target: [0.2, 0.2, 0], at: 0.55 },
-  { label: 'close-orbit', position: [-1.2, 0.2, 3.8], target: [0.15, -0.05, 0], at: 1.1 },
-  { label: 'right-sweep', position: [2.9, 1.1, 5.4], target: [-0.15, 0, 0], at: 1.8 },
-  { label: 'rear-angle', position: [1.2, -0.5, -4.8], target: [0, -0.1, 0], at: 2.45 },
-  { label: 'top-down', position: [0, 3.6, 3.6], target: [0, -0.35, 0], at: 3.2 },
-  { label: 'hero-return', position: [0, 0.9, 7.4], target: [0, 0, 0], at: 4 }
+  { label: 'surface-establish', position: [0, 2.6, 8.6], target: [0, 1.2, 0], at: 0 },
+  { label: 'hole-reveal', position: [0.8, 2.1, 4.6], target: [0, 1.05, 0], at: 0.65 },
+  { label: 'drop-in', position: [0.3, 0.8, 1.8], target: [0, -0.2, 0], at: 1.2 },
+  { label: 'tunnel-descent', position: [0.1, -1.1, 1], target: [0, -2.5, 0], at: 1.9 },
+  { label: 'cave-arrival', position: [-1.9, -3.1, 2.8], target: [0, -3.2, 0], at: 2.6 },
+  { label: 'inner-orbit', position: [2.4, -2.7, -1.5], target: [0, -3.1, 0], at: 3.4 },
+  { label: 'hero-room', position: [0, -2.4, 3.9], target: [0, -3, 0], at: 4.2 }
 ];
 
 export const timelineDurations = {
-  section: 0.72
+  section: 0.76
 };

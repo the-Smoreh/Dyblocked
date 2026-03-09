@@ -58,18 +58,15 @@ export function ScrollScene() {
       );
     });
 
-    timeline.to(
-      sculptureRoot.current?.rotation ?? {},
-      { y: Math.PI * 1.7, x: Math.PI * 0.35, z: Math.PI * 0.12 },
-      0
-    );
-    timeline.to(innerCluster.current?.rotation ?? {}, { x: Math.PI * 2.8, y: Math.PI * 1.9, z: Math.PI * 0.45 }, 0.8);
-    timeline.to(innerCluster.current?.position ?? {}, { y: -0.35, x: 0.12 }, 1.4);
-    timeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 1.6, y: Math.PI * 0.8, x: Math.PI * 0.35 }, 1.7);
-    timeline.to(haloRing.current?.scale ?? {}, { x: 1.65, y: 1.65, z: 1.1 }, 2.2);
-    timeline.to(sculptureRoot.current?.position ?? {}, { y: 0.18, x: -0.1 }, 2.5);
-    timeline.to(accentLight.current ?? {}, { intensity: 2 }, 2.6);
-    timeline.to(accentLight.current ?? {}, { intensity: 0.75 }, 3.8);
+    timeline.to(sculptureRoot.current?.rotation ?? {}, { y: Math.PI * 0.22, x: Math.PI * 0.06 }, 0.2);
+    timeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 1.4, y: Math.PI * 0.4 }, 0.5);
+    timeline.to(haloRing.current?.scale ?? {}, { x: 1.18, y: 1.18, z: 1.06 }, 0.9);
+    timeline.to(sculptureRoot.current?.position ?? {}, { y: -0.2 }, 1.3);
+    timeline.to(sculptureRoot.current?.position ?? {}, { y: -1 }, 2);
+    timeline.to(innerCluster.current?.rotation ?? {}, { y: Math.PI * 1.4, x: Math.PI * 0.25 }, 2.5);
+    timeline.to(innerCluster.current?.position ?? {}, { y: -3.05, x: 0.18 }, 3);
+    timeline.to(accentLight.current ?? {}, { intensity: 3.1 }, 2.8);
+    timeline.to(accentLight.current ?? {}, { intensity: 1.4 }, 4);
 
     const trigger = ScrollTrigger.create({
       trigger: rootRef.current,
@@ -88,7 +85,7 @@ export function ScrollScene() {
   return (
     <div ref={rootRef} className="scene-scroll-shell" style={{ height: `calc(${sections.length} * 100vh)` }}>
       <div className="scene-pin-wrap">
-        <Canvas className="scene-canvas" camera={{ position: [0, 0.6, 6.8], fov: 42 }} dpr={[1, 1.7]}>
+        <Canvas className="scene-canvas" camera={{ position: [0, 2.6, 8.6], fov: 44 }} dpr={[1, 1.7]}>
           <CameraRig cameraRef={cameraRef} focusTargetRef={focusTarget} />
           <SceneContents
             sculptureRootRef={sculptureRoot}

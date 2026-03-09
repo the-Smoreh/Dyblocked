@@ -2,33 +2,33 @@ import { NarrativeSection } from '@/lib/types';
 
 export const sections: NarrativeSection[] = [
   {
-    id: 'hero',
-    eyebrow: 'Designed for motion',
-    title: 'Scroll through the reveal',
-    body: 'A cinematic product-story prototype built from light, geometry, and timing.'
-  },
-  {
-    id: 'shape',
+    id: 'surface',
     eyebrow: 'Chapter 01',
-    title: 'Shape the first impression',
-    body: 'Start with a restrained silhouette and let the camera do the storytelling.'
+    title: 'You begin on a frozen surface',
+    body: 'A bright arctic plain opens up with a carved ice ring revealing a cave entrance below.'
   },
   {
-    id: 'reveal',
+    id: 'approach',
     eyebrow: 'Chapter 02',
-    title: 'Reveal with intention',
-    body: 'Separate the structure in stages so every movement feels earned.'
+    title: 'The opening starts to pull you in',
+    body: 'As the camera lowers, the rim catches the light and the tunnel depth becomes visible.'
   },
   {
-    id: 'atmosphere',
+    id: 'descent',
     eyebrow: 'Chapter 03',
-    title: 'Build atmosphere, not noise',
-    body: 'Use light, spacing, and depth to create scale without clutter.'
+    title: 'Descend through the ice shaft',
+    body: 'Particles and glacial reflections build motion as you transition from surface daylight to cave glow.'
+  },
+  {
+    id: 'chamber',
+    eyebrow: 'Chapter 04',
+    title: 'Enter an illuminated ice chamber',
+    body: 'Inside the cave, crystal forms and translucent walls keep the room bright and atmospheric.'
   },
   {
     id: 'cta',
     eyebrow: 'Final frame',
-    title: 'Turn motion into narrative',
-    body: 'The architecture is ready for real assets, deeper polish, and production storytelling.'
+    title: 'Fully inside the world',
+    body: 'The final orbit settles in the chamber so the full environment reads as one continuous journey.'
   }
 ];
