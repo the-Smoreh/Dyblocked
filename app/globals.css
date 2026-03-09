@@ -19,8 +19,17 @@ body {
   min-height: 100vh;
 }
 
-.scene-pin-wrap {
+.story-experience {
   position: relative;
+}
+
+.scene-scroll-shell {
+  position: relative;
+}
+
+.scene-pin-wrap {
+  position: sticky;
+  top: 0;
   height: 100vh;
   width: 100%;
   overflow: clip;
@@ -32,19 +41,21 @@ body {
 }
 
 .overlay-sections {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 3;
-  margin-top: -100vh;
+  pointer-events: none;
 }
 
 .story-section {
   min-height: 100vh;
   display: grid;
   align-content: center;
-  max-width: 680px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 10vh 2rem;
   gap: 1rem;
+  text-shadow: 0 8px 40px rgba(3, 8, 18, 0.8);
 }
 
 .story-section h2 {
@@ -59,14 +70,14 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.75rem;
-  color: #a6b0c2;
+  color: #b7c2d9;
 }
 
 .story-section__body {
   margin: 0;
   max-width: 56ch;
   font-size: clamp(1rem, 1.6vw, 1.2rem);
-  color: #d9dfec;
+  color: #e7edff;
 }
 
 .story-section--cta {
@@ -78,6 +89,7 @@ body {
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-top: 0.75rem;
+  pointer-events: auto;
 }
 
 .story-section__actions button {

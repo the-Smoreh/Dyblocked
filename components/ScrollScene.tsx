@@ -8,6 +8,7 @@ import * as THREE from 'three';
 import { CameraRig } from '@/components/CameraRig';
 import { SceneContents } from '@/components/SceneContents';
 import { cameraKeyframes, timelineDurations } from '@/lib/animationConfig';
+import { sections } from '@/lib/sceneConfig';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,22 +60,21 @@ export function ScrollScene() {
 
     timeline.to(
       sculptureRoot.current?.rotation ?? {},
-      { y: Math.PI * 1.5, x: Math.PI * 0.25, z: Math.PI * 0.08 },
+      { y: Math.PI * 1.7, x: Math.PI * 0.35, z: Math.PI * 0.12 },
       0
     );
-    timeline.to(innerCluster.current?.rotation ?? {}, { x: Math.PI * 2.2, y: Math.PI * 1.2 }, 1);
-    timeline.to(innerCluster.current?.position ?? {}, { y: -0.2 }, 1.7);
-    timeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 1.2, y: Math.PI * 0.3 }, 2);
-    timeline.to(haloRing.current?.scale ?? {}, { x: 1.35, y: 1.35, z: 1 }, 2.3);
-    timeline.to(accentLight.current ?? {}, { intensity: 1.2 }, 2.6);
-    timeline.to(accentLight.current ?? {}, { intensity: 0.45 }, 3.8);
+    timeline.to(innerCluster.current?.rotation ?? {}, { x: Math.PI * 2.4, y: Math.PI * 1.4 }, 1);
+    timeline.to(innerCluster.current?.position ?? {}, { y: -0.28 }, 1.7);
+    timeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 1.35, y: Math.PI * 0.45 }, 2);
+    timeline.to(haloRing.current?.scale ?? {}, { x: 1.45, y: 1.45, z: 1 }, 2.3);
+    timeline.to(accentLight.current ?? {}, { intensity: 1.4 }, 2.6);
+    timeline.to(accentLight.current ?? {}, { intensity: 0.35 }, 3.8);
 
     const trigger = ScrollTrigger.create({
       trigger: rootRef.current,
       start: 'top top',
-      end: '+=4500',
+      end: 'bottom bottom',
       scrub: 1,
-      pin: true,
       animation: timeline
     });
 
@@ -85,16 +85,18 @@ export function ScrollScene() {
   }, [cameraState]);
 
   return (
-    <div ref={rootRef} className="scene-pin-wrap">
-      <Canvas className="scene-canvas" camera={{ position: [0, 0.6, 6.8], fov: 42 }} dpr={[1, 1.7]}>
-        <CameraRig cameraRef={cameraRef} focusTargetRef={focusTarget} />
-        <SceneContents
-          sculptureRootRef={sculptureRoot}
-          innerClusterRef={innerCluster}
-          haloRingRef={haloRing}
-          accentLightRef={accentLight}
-        />
-      </Canvas>
+    <div ref={rootRef} className="scene-scroll-shell" style={{ height: `calc(${sections.length} * 100vh)` }}>
+      <div className="scene-pin-wrap">
+        <Canvas className="scene-canvas" camera={{ position: [0, 0.6, 6.8], fov: 42 }} dpr={[1, 1.7]}>
+          <CameraRig cameraRef={cameraRef} focusTargetRef={focusTarget} />
+          <SceneContents
+            sculptureRootRef={sculptureRoot}
+            innerClusterRef={innerCluster}
+            haloRingRef={haloRing}
+            accentLightRef={accentLight}
+          />
+        </Canvas>
+      </div>
     </div>
   );
 }

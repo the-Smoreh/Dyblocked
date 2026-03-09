@@ -4,8 +4,10 @@ import { ScrollScene } from '@/components/ScrollScene';
 export default function HomePage() {
   return (
     <main className="page-root">
-      <ScrollScene />
-      <OverlaySections />
+      <div className="story-experience">
+        <ScrollScene />
+        <OverlaySections />
+      </div>
     </main>
   );
 }

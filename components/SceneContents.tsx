@@ -1,6 +1,6 @@
 'use client';
 
-import { Float } from '@react-three/drei';
+import { Float, Sparkles, Text } from '@react-three/drei';
 import type React from 'react';
 import * as THREE from 'three';
 
@@ -11,8 +11,23 @@ type SceneContentsProps = {
   accentLightRef: React.MutableRefObject<THREE.DirectionalLight | null>;
 };
 
-const metal = new THREE.MeshStandardMaterial({ color: '#95a5b6', metalness: 0.72, roughness: 0.25 });
-const darkMetal = new THREE.MeshStandardMaterial({ color: '#3a4252', metalness: 0.6, roughness: 0.32 });
+const metal = new THREE.MeshPhysicalMaterial({
+  color: '#9ebfff',
+  metalness: 0.95,
+  roughness: 0.18,
+  clearcoat: 1,
+  clearcoatRoughness: 0.15,
+  emissive: '#1b2d63',
+  emissiveIntensity: 0.3
+});
+
+const darkMetal = new THREE.MeshPhysicalMaterial({
+  color: '#2f3a58',
+  metalness: 0.85,
+  roughness: 0.28,
+  clearcoat: 1,
+  clearcoatRoughness: 0.2
+});
 
 export function SceneContents({
   sculptureRootRef,
@@ -22,16 +37,21 @@ export function SceneContents({
 }: SceneContentsProps) {
   return (
     <>
-      <color attach="background" args={['#040508']} />
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[3, 5, 6]} intensity={1.3} color="#dce6ff" />
-      <directionalLight ref={accentLightRef} position={[-2, 2, 4]} intensity={0.25} color="#99c0ff" />
-      <pointLight position={[0, -2, 2]} intensity={0.4} color="#7aa6ff" />
+      <color attach="background" args={['#02030a']} />
+      <fog attach="fog" args={['#02030a', 7, 17]} />
+      <ambientLight intensity={0.22} />
+      <hemisphereLight intensity={0.45} color="#cfdbff" groundColor="#0b1022" />
+      <spotLight position={[0, 5, 4]} angle={0.42} penumbra={0.8} intensity={25} color="#a7beff" />
+      <directionalLight position={[3, 4, 6]} intensity={1.8} color="#f3f7ff" />
+      <directionalLight ref={accentLightRef} position={[-2.5, 2, 4]} intensity={0.45} color="#7bb4ff" />
+      <pointLight position={[0, -2, 1]} intensity={0.8} color="#4f79ff" />
+
+      <Sparkles size={2} count={90} speed={0.22} scale={[9, 5, 7]} color="#a9c7ff" />
 
       <group ref={sculptureRootRef}>
-        <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.3}>
+        <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.28}>
           <mesh material={darkMetal}>
-            <icosahedronGeometry args={[1.25, 0]} />
+            <icosahedronGeometry args={[1.25, 1]} />
           </mesh>
         </Float>
 
@@ -55,6 +75,17 @@ export function SceneContents({
             <torusGeometry args={[1.2, 0.018, 16, 100]} />
           </mesh>
         </group>
+
+        <Text
+          position={[0, -1.85, 0]}
+          fontSize={0.22}
+          letterSpacing={0.07}
+          color="#dbe6ff"
+          anchorX="center"
+          anchorY="middle"
+        >
+          DYBLOCKED
+        </Text>
       </group>
     </>
   );
