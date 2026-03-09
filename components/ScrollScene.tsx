@@ -21,6 +21,7 @@ export function ScrollScene() {
   const accentLight = useRef<THREE.DirectionalLight | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const focusTarget = useRef(new THREE.Vector3(0, 0, 0));
+  const lastScrollIndex = useRef(0);
 
   const [mode, setMode] = useState<ViewMode>('home');
   const [activePlanetIndex, setActivePlanetIndex] = useState(0);
@@ -28,8 +29,8 @@ export function ScrollScene() {
   const cameraState = useMemo(
     () => ({
       x: 0,
-      y: 0.3,
-      z: 10.5,
+      y: 0.25,
+      z: 10.6,
       tx: 0,
       ty: 0,
       tz: 0
@@ -48,23 +49,30 @@ export function ScrollScene() {
     if (!planet) return;
 
     gsap.to(cameraState, {
-      x: planet.position[0] + planet.radius * 1.8,
-      y: planet.position[1] + 0.6,
-      z: planet.position[2] + planet.radius * 2.6,
+      x: planet.position[0] + planet.radius * 1.9,
+      y: planet.position[1] + 0.55,
+      z: planet.position[2] + planet.radius * 2.9,
       tx: planet.position[0],
       ty: planet.position[1],
       tz: planet.position[2],
-      duration: 1.15,
+      duration: 1.2,
       ease: 'power3.inOut',
       onUpdate: updateCamera
     });
 
     gsap.to(accentLight.current ?? {}, {
-      intensity: 1.8 + index * 0.25,
-      duration: 0.8,
+      intensity: 2 + index * 0.22,
+      duration: 0.9,
       ease: 'sine.inOut'
     });
   };
+
+  useEffect(() => {
+    document.body.style.overflow = mode === 'home' ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mode]);
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -72,23 +80,23 @@ export function ScrollScene() {
     updateCamera();
 
     const orbitTimeline = gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } });
-    orbitTimeline.to(sculptureRoot.current?.rotation ?? {}, { y: Math.PI * 0.15, duration: 4.2 }, 0);
-    orbitTimeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 0.35, duration: 4.2 }, 0);
-    orbitTimeline.to(innerCluster.current?.position ?? {}, { y: 0.35, duration: 3.4 }, 0.5);
+    orbitTimeline.to(sculptureRoot.current?.rotation ?? {}, { y: Math.PI * 0.2, duration: 5 }, 0);
+    orbitTimeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 0.5, duration: 5 }, 0);
+    orbitTimeline.to(innerCluster.current?.position ?? {}, { y: 0.46, duration: 3.8 }, 0.4);
 
     const trigger = ScrollTrigger.create({
       trigger: rootRef.current,
       start: 'top top',
-      end: `+=${gamePlanets.length * 800}`,
-      scrub: 0.6,
+      end: `+=${gamePlanets.length * 900}`,
+      scrub: 0.5,
       onUpdate: (self) => {
         if (mode !== 'browse') return;
-        const nextIndex = Math.min(gamePlanets.length - 1, Math.floor(self.progress * gamePlanets.length));
-        setActivePlanetIndex((prev) => {
-          if (prev === nextIndex) return prev;
-          flyToPlanet(nextIndex);
-          return nextIndex;
-        });
+        const maxIndex = gamePlanets.length - 1;
+        const nextIndex = Math.round(self.progress * maxIndex);
+        if (nextIndex === lastScrollIndex.current) return;
+        lastScrollIndex.current = nextIndex;
+        setActivePlanetIndex(nextIndex);
+        flyToPlanet(nextIndex);
       }
     });
 
@@ -101,9 +109,13 @@ export function ScrollScene() {
   const activePlanet = gamePlanets[activePlanetIndex];
 
   const handleGamesClick = () => {
+    if (mode !== 'home') return;
     setMode('browse');
     setActivePlanetIndex(0);
+    lastScrollIndex.current = 0;
+    window.scrollTo({ top: 0, behavior: 'auto' });
     flyToPlanet(0);
+    ScrollTrigger.refresh();
   };
 
   const handlePlanetClick = (id: string) => {
@@ -114,13 +126,13 @@ export function ScrollScene() {
       const target = gamePlanets[clickedIndex];
       setMode('entry');
       gsap.to(cameraState, {
-        x: target.position[0] + target.radius * 0.6,
-        y: target.position[1] + 0.2,
-        z: target.position[2] + target.radius * 1.1,
+        x: target.position[0] + target.radius * 0.55,
+        y: target.position[1] + 0.18,
+        z: target.position[2] + target.radius * 1,
         tx: target.position[0],
         ty: target.position[1],
         tz: target.position[2],
-        duration: 1.2,
+        duration: 1.25,
         ease: 'power2.inOut',
         onUpdate: updateCamera
       });
@@ -129,14 +141,19 @@ export function ScrollScene() {
 
     if (mode === 'browse') {
       setActivePlanetIndex(clickedIndex);
+      lastScrollIndex.current = clickedIndex;
       flyToPlanet(clickedIndex);
     }
   };
 
   return (
-    <div ref={rootRef} className={`scene-scroll-shell mode-${mode}`} style={{ height: '600vh' }}>
+    <div
+      ref={rootRef}
+      className={`scene-scroll-shell mode-${mode}`}
+      style={{ height: mode === 'home' ? '100vh' : `${Math.max(5, gamePlanets.length + 2) * 100}vh` }}
+    >
       <div className="scene-pin-wrap">
-        <Canvas className="scene-canvas" camera={{ position: [0, 0.3, 10.5], fov: 43 }} dpr={[1, 1.7]}>
+        <Canvas className="scene-canvas" camera={{ position: [0, 0.25, 10.6], fov: 43 }} dpr={[1, 2]}>
           <CameraRig cameraRef={cameraRef} focusTargetRef={focusTarget} />
           <SceneContents
             sculptureRootRef={sculptureRoot}
@@ -151,11 +168,17 @@ export function ScrollScene() {
 
         <div className="space-ui" aria-label="Space navigation controls">
           <button type="button" className="games-button" onClick={handleGamesClick}>
-            Games
+            {mode === 'home' ? 'Games' : 'Games Mode Active'}
           </button>
           <div className="planet-status">
             <p>{mode === 'home' ? 'Home: Deblocked planet' : `Active planet: ${activePlanet.label}`}</p>
-            <p>{mode === 'entry' ? 'Entering planet experience...' : 'Scroll to move between planets.'}</p>
+            <p>
+              {mode === 'entry'
+                ? 'Entering planet experience...'
+                : mode === 'home'
+                  ? 'Scroll locked. Click Games to explore planets.'
+                  : 'Scroll to move between planets, click active planet to enter.'}
+            </p>
           </div>
         </div>
       </div>
