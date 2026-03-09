@@ -1,0 +1,1274 @@
+
+CODEX ULTRA SPEC
+Cinematic Scrollytelling Prototype
+Next.js + React Three Fiber + GSAP + ScrollTrigger + Lenis
+
+===============================================================================
+1. PRIMARY OBJECTIVE
+===============================================================================
+
+Build a cinematic, premium-feeling scrollytelling landing page prototype using:
+
+- Next.js App Router
+- TypeScript
+- React
+- three
+- @react-three/fiber
+- @react-three/drei
+- gsap
+- ScrollTrigger
+- @gsap/react
+- Lenis
+
+The prototype should use a fullscreen pinned React Three Fiber Canvas and multiple
+HTML overlay sections. The 3D content should be built entirely from primitive
+geometry for version 1. The user scroll should scrub a GSAP master timeline that
+animates the camera, object groups, and optionally lighting. The goal is to prove
+the architecture, choreography, and visual feel before introducing imported GLB
+assets or heavy polish.
+
+This is NOT a final production site yet. It is a strong prototype foundation that
+must be easy to extend later.
+
+===============================================================================
+2. HIGH-LEVEL PRODUCT VISION
+===============================================================================
+
+The finished prototype should feel like a luxury product reveal or editorial
+technology landing page.
+
+As the page loads:
+- the user sees a dark fullscreen hero
+- a central 3D sculpture sits in a dramatic composition
+- the page feels calm, premium, and intentional
+
+As the user scrolls:
+- the Canvas remains pinned
+- the 3D scene changes with the scroll
+- the camera moves cinematically
+- the object reveals more detail and structure
+- the HTML narrative sections guide the user through the experience
+
+The first version should feel visually strong even if it uses only primitive meshes.
+
+The biggest priority is:
+1. stable architecture
+2. correct scroll-animation wiring
+3. clean camera choreography
+4. strong composition
+5. easy editability
+
+===============================================================================
+3. CORE SYSTEMS MODEL
+===============================================================================
+
+Think of the app as 3 separate systems:
+
+System A: Render System
+- React Three Fiber
+- Three.js scene
+- primitive meshes
+- materials
+- lights
+- camera
+- Canvas
+
+System B: Choreography System
+- GSAP timeline
+- labeled narrative beats
+- tweened camera values
+- tweened group transforms
+- optional lighting transitions
+- optional DOM fades
+
+System C: Scroll Transport System
+- Lenis smooth scroll
+- ScrollTrigger
+- pinning
+- scrub behavior
+- mapping page scroll progress into timeline progress
+
+The code structure must reflect this separation. Avoid mixing all responsibilities
+in one huge component.
+
+===============================================================================
+4. IMPORTANT CONSTRAINTS
+===============================================================================
+
+For version 1:
+
+- Do NOT use external .glb or .gltf files yet
+- Do NOT use complex shaders yet
+- Do NOT use heavy postprocessing yet
+- Do NOT build ecommerce or CMS features
+- Do NOT overcomplicate mobile behavior
+- Do NOT split the main camera choreography into many unrelated triggers
+- Do NOT create a messy architecture where scroll, camera, and mesh state all
+  fight each other
+
+Instead:
+
+- Build the entire first scene using primitive geometry
+- Use one master GSAP timeline for the main scrollytelling motion
+- Use one main ScrollTrigger for the pinned scroll scene
+- Keep the choreography editable through a config object
+- Keep the project modular and readable
+
+===============================================================================
+5. REQUIRED TECH STACK
+===============================================================================
+
+Use these dependencies:
+
+- next
+- react
+- react-dom
+- typescript
+- three
+- @react-three/fiber
+- @react-three/drei
+- gsap
+- @gsap/react
+- lenis
+
+Use App Router structure.
+
+Use client components for:
+- WebGL scene
+- animation setup
+- ScrollTrigger
+- Lenis
+- refs and browser side-effects
+
+Keep server components for top-level page shell where possible.
+
+===============================================================================
+6. VERSION COMPATIBILITY NOTE
+===============================================================================
+
+Be careful with React Three Fiber major version compatibility.
+
+Use versions that are known to work together with the chosen React major version.
+Do not guess random incompatible package versions.
+
+If using React 18, ensure R3F version is compatible with React 18.
+If using React 19, ensure R3F version is compatible with React 19.
+
+The generated code should avoid version-fragile APIs unless necessary.
+
+===============================================================================
+7. PROJECT FILE STRUCTURE
+===============================================================================
+
+Generate the project with this approximate structure:
+
+app/
+  layout.tsx
+  page.tsx
+  globals.css
+
+components/
+  SmoothScrollProvider.tsx
+  ScrollScene.tsx
+  SceneContents.tsx
+  CameraRig.tsx
+  OverlaySections.tsx
+  StorySection.tsx
+
+lib/
+  animationConfig.ts
+  sceneConfig.ts
+  types.ts
+  utils.ts
+
+Optional:
+hooks/
+  useMediaQuery.ts
+  useReducedMotionPreference.ts
+
+The files should have these responsibilities:
+
+app/layout.tsx
+- root layout
+- imports globals
+- wraps app with SmoothScrollProvider if needed
+
+app/page.tsx
+- page shell
+- includes the scroll scene section
+- includes overlay narrative sections
+- keeps page structure simple and readable
+
+components/SmoothScrollProvider.tsx
+- initializes Lenis once
+- syncs Lenis with ScrollTrigger
+- handles cleanup
+
+components/ScrollScene.tsx
+- contains the pinned scene wrapper
+- creates the Canvas
+- sets up main GSAP timeline
+- owns refs for camera targets, scene groups, and wrapper elements
+- connects timeline to ScrollTrigger
+
+components/SceneContents.tsx
+- builds the primitive-based 3D sculpture
+- defines mesh groups and lighting
+- exposes refs for animatable groups
+
+components/CameraRig.tsx
+- handles camera rig behavior
+- updates camera lookAt from mutable target vector or object
+- keeps camera behavior readable
+
+components/OverlaySections.tsx
+- renders the HTML story sections
+- defines narrative flow
+- provides semantic content structure
+
+components/StorySection.tsx
+- reusable section block for overlay content
+
+lib/animationConfig.ts
+- central source of truth for scroll distances
+- keyframes
+- labels
+- responsive variants
+- debug toggles
+
+lib/sceneConfig.ts
+- scene defaults
+- colors
+- light intensities
+- primitive dimensions
+- ambient motion settings
+
+lib/types.ts
+- typed structures for keyframes and config objects
+
+===============================================================================
+8. PACKAGE.JSON REQUIREMENTS
+===============================================================================
+
+Generate a valid package.json with scripts like:
+
+- dev
+- build
+- start
+- lint
+
+Use a sensible dependency set and keep it realistic. Do not invent nonexistent
+packages or fake scripts.
+
+===============================================================================
+9. GLOBAL STYLING REQUIREMENTS
+===============================================================================
+
+Use a minimal, elegant, dark visual language.
+
+Global style direction:
+- dark but not flat black unless intentionally chosen
+- premium contrast
+- large clean headings
+- generous whitespace
+- editorial typography feel
+- subtle gradients or layered background tones
+- strong legibility
+
+CSS requirements:
+- stable layout sizing
+- pinned section support
+- no accidental overflow bugs
+- readable overlay text
+- section spacing that creates rhythm
+- reasonable z-index layering between Canvas and DOM
+
+Use CSS that is easy to modify.
+
+===============================================================================
+10. USER EXPERIENCE TARGET
+===============================================================================
+
+The prototype should feel:
+
+- smooth
+- expensive
+- cinematic
+- restrained
+- modern
+- intentional
+
+It should NOT feel:
+- noisy
+- gamey
+- gimmicky
+- cluttered
+- random
+- over-animated
+
+The first preview should impress through composition and motion, not through flashy
+overload.
+
+===============================================================================
+11. NARRATIVE STRUCTURE
+===============================================================================
+
+The scroll story should contain at least 5 major beats:
+
+Beat 1: Intro / Establishing Shot
+- object framed elegantly
+- camera stable
+- subtle ambient movement only
+- user gets an immediate premium impression
+
+Beat 2: Approach / Focus
+- camera pushes closer
+- object rotates slightly
+- some parallax reveals form
+- headline still anchors attention
+
+Beat 3: Reveal / Expansion
+- child elements separate, rise, or orbit outward
+- composition opens up
+- user feels like they are seeing internal structure or hidden design logic
+
+Beat 4: Scale / Atmosphere Shift
+- camera changes angle or widens
+- scene mood subtly shifts
+- lighting or spacing helps imply scale
+
+Beat 5: Final Hero / CTA Framing
+- camera lands on a clean hero angle
+- object settles into a composed pose
+- final call-to-action becomes primary
+
+Optionally include small sub-beats between these.
+
+===============================================================================
+12. PAGE LAYOUT ARCHITECTURE
+===============================================================================
+
+Use a normal document flow page with:
+
+- hero wrapper
+- pinned scroll scene section
+- multiple stacked overlay sections
+- enough scroll height to give the timeline room
+
+Recommended mental model:
+- the Canvas is the stage
+- the overlay sections are the script
+- the timeline is the choreography
+- scroll is the transport mechanism
+
+The main pinned section should occupy a long scroll range. The effect must not feel
+rushed.
+
+===============================================================================
+13. SCROLLTRIGGER ARCHITECTURE
+===============================================================================
+
+Use one master ScrollTrigger for the core scrollytelling sequence.
+
+Requirements:
+- pin the main scene wrapper
+- scrub the master GSAP timeline
+- define a clear and editable end distance
+- use markers only behind a debug toggle
+- cleanup on unmount
+
+Important:
+Do not fragment the main 3D choreography into many unrelated ScrollTriggers.
+Small extra triggers for text accents are acceptable later, but the core 3D
+sequence should stay in one timeline.
+
+Use a long enough scroll range to feel luxurious.
+
+===============================================================================
+14. SCROLL DISTANCE DESIGN
+===============================================================================
+
+Expose scroll distance in config.
+
+Example:
+- pinnedScrollDistance: 5000 to 9000 pixels on desktop
+- smaller distance on tablet
+- smaller or simplified version on mobile
+
+Create a timeline that maps narrative beats roughly like:
+
+0.00 - 0.18  intro
+0.18 - 0.38  approach
+0.38 - 0.62  reveal
+0.62 - 0.84  atmosphere shift
+0.84 - 1.00  final hero / CTA
+
+The actual numbers can be changed, but the structure should be easy to tune.
+
+===============================================================================
+15. LENIS INTEGRATION REQUIREMENTS
+===============================================================================
+
+Create a SmoothScrollProvider that:
+
+- initializes Lenis once
+- starts RAF loop or equivalent update path
+- updates ScrollTrigger on Lenis scroll events
+- cleans up listeners on unmount
+- keeps implementation stable and readable
+
+Important:
+- do not initialize Lenis multiple times
+- do not place Lenis setup inside scene components if it can be avoided
+- ensure ScrollTrigger refresh works after layout is ready
+
+Keep the integration clear enough that future edits do not break scroll syncing.
+
+===============================================================================
+16. CAMERA SYSTEM REQUIREMENTS
+===============================================================================
+
+The camera system is the heart of the experience.
+
+Requirements:
+- use a perspective camera
+- animate camera position through GSAP
+- animate a look target through GSAP
+- update camera orientation continuously toward the look target
+- keep camera motion smooth and cinematic
+
+The camera path must feel intentional. It should behave like a film camera moving
+through a designed reveal.
+
+Recommended approach:
+- maintain mutable camera target values in an object or vector ref
+- tween target values in GSAP
+- in a per-frame hook or controlled update, camera.lookAt(target)
+
+Do not leave camera behavior hardcoded and inflexible.
+
+===============================================================================
+17. CAMERA KEYFRAME SYSTEM
+===============================================================================
+
+Create an editable keyframe structure in config.
+
+Example shape:
+
+cameraKeyframes = {
+  intro: {
+    position: [0, 0.4, 7.5],
+    target: [0, 0.2, 0],
+  },
+  approach: {
+    position: [1.2, 0.8, 5.2],
+    target: [0.1, 0.3, 0],
+  },
+  reveal: {
+    position: [2.4, 1.1, 4.8],
+    target: [0.5, 0.4, 0],
+  },
+  scale: {
+    position: [-1.5, 2.0, 8.5],
+    target: [0.0, 0.6, 0],
+  },
+  cta: {
+    position: [0.8, 0.6, 6.0],
+    target: [0.0, 0.2, 0],
+  }
+}
+
+The exact values can differ, but use a clear system like this.
+
+===============================================================================
+18. OBJECT / SCULPTURE DESIGN REQUIREMENTS
+===============================================================================
+
+Build a central 3D sculpture entirely from primitives.
+
+The sculpture should be made from grouped meshes so it can animate in layers.
+
+Possible composition:
+- main core body using rounded box or capsule
+- ring group using torus meshes
+- floating accent spheres
+- lower base or pedestal plane
+- rear framing plane or subtle backdrop element
+
+The point is not realism. The point is visual hierarchy and motion potential.
+
+The sculpture should support:
+- root rotation
+- root translation
+- child group separation
+- subtle ambient drift
+- reveal animation
+
+===============================================================================
+19. SCENE CONTENT STRUCTURE
+===============================================================================
+
+Inside SceneContents, expose refs or a typed ref bundle for:
+
+- rootGroup
+- ringGroup
+- accentGroup
+- coreGroup
+- lightGroup (optional)
+- floor group if needed
+
+This makes it easy for ScrollScene to animate the parts through GSAP.
+
+The SceneContents component should remain focused on scene composition, not on
+scroll logic.
+
+===============================================================================
+20. PRIMITIVE GEOMETRY GUIDELINES
+===============================================================================
+
+Allowed geometry examples:
+- boxGeometry
+- sphereGeometry
+- torusGeometry
+- cylinderGeometry
+- planeGeometry
+- roundedBox helper if available through Drei
+- capsule if supported and stable
+
+Keep primitive count reasonable.
+
+Avoid:
+- hundreds of meshes for no reason
+- chaotic random layouts
+- fake complexity that reduces clarity
+- overusing wireframes
+
+Favor:
+- one strong centerpiece
+- a few supporting elements
+- consistent proportions
+- clear silhouette
+
+===============================================================================
+21. LIGHTING DESIGN REQUIREMENTS
+===============================================================================
+
+Use lighting to create drama even with simple geometry.
+
+Minimum lighting setup:
+- ambient light
+- one main directional light or spotlight
+- one rim or side light
+
+Optional:
+- subtle emissive material accents
+- contact shadow or soft floor shadow
+
+Expose key light parameters in config:
+- ambient intensity
+- key light intensity
+- rim light intensity
+- light positions
+
+Do not use blown-out lighting.
+Do not make the scene look flat.
+
+===============================================================================
+22. MATERIAL DIRECTION
+===============================================================================
+
+Keep materials simple and premium.
+
+Recommended material direction:
+- matte or satin-like base surfaces
+- restrained metallic accents
+- limited palette
+- strong contrast through lighting rather than rainbow colors
+
+Avoid:
+- noisy textures
+- random glossy everything
+- too many different materials
+- cheap neon overload
+
+Possible palette direction:
+- near-black
+- graphite
+- silver accent
+- muted warm highlight
+- very subtle blue or amber light tint if desired
+
+===============================================================================
+23. BACKGROUND / ATMOSPHERE DESIGN
+===============================================================================
+
+The background should support the object, not overpower it.
+
+Possible techniques:
+- plain dark scene background
+- slight fog
+- subtle gradient in CSS behind the Canvas container
+- soft vignette via DOM overlay
+- rear plane for depth
+
+Do not use a busy environment map in version 1.
+Do not overwhelm the composition with decorative noise.
+
+===============================================================================
+24. DOM OVERLAY SYSTEM
+===============================================================================
+
+OverlaySections should render the story content.
+
+Requirements:
+- semantic HTML structure
+- clean section hierarchy
+- large readable headings
+- supporting body text
+- final CTA block
+- spacing that matches the narrative beats
+
+Example content structure:
+- Hero title
+- Hero subtitle
+- Section: Precision
+- Section: Reveal
+- Section: Motion
+- Section: Atmosphere
+- Final CTA
+
+Keep the copy placeholder but polished enough to demonstrate the layout.
+
+===============================================================================
+25. STORY SECTION COMPONENT
+===============================================================================
+
+Create a reusable StorySection component with props like:
+- eyebrow
+- title
+- body
+- align
+- className
+- children
+
+This helps keep the markup consistent and editable.
+
+===============================================================================
+26. HTML ANIMATION RULES
+===============================================================================
+
+For version 1, keep HTML animations simple.
+
+Allowed:
+- opacity fade
+- slight translateY / translateX
+- gentle stagger if necessary
+
+Avoid:
+- split text libraries
+- overcomplicated character animations
+- too many independent DOM triggers
+
+The main priority is the 3D timeline, not flashy text effects.
+
+===============================================================================
+27. GSAP IMPLEMENTATION RULES
+===============================================================================
+
+Use GSAP properly.
+
+Requirements:
+- register ScrollTrigger
+- register useGSAP if needed
+- use refs instead of brittle global selectors where possible
+- scope animations to component context
+- revert or cleanup on unmount
+- avoid duplicate triggers on rerender
+
+Main pattern:
+- create master timeline
+- label beats
+- tween camera object values
+- tween look target values
+- tween group transforms
+- optionally tween DOM section states
+
+Use clean, readable GSAP code.
+
+===============================================================================
+28. MASTER TIMELINE DESIGN
+===============================================================================
+
+Build one master timeline with labels such as:
+- intro
+- approach
+- reveal
+- scale
+- cta
+
+The timeline should coordinate:
+- camera position
+- camera target
+- rootGroup rotation
+- rootGroup position
+- ringGroup position/rotation
+- accentGroup drift or spread
+- optional light intensity changes
+
+Scrubbed animation should usually use linear progression or restrained easing.
+
+Do not use overly elastic or bouncy easing in the main scrubbed motion.
+
+===============================================================================
+29. AMBIENT MOTION RULES
+===============================================================================
+
+It is acceptable to use useFrame for small ambient motion only.
+
+Examples:
+- slight ring idle rotation
+- very subtle float on accents
+- camera lookAt update toward mutable target
+- gentle easing of non-GSAP values if needed
+
+Do NOT put the main scrollytelling logic inside useFrame.
+That belongs in GSAP.
+
+===============================================================================
+30. RESPONSIVENESS STRATEGY
+===============================================================================
+
+Create a basic but thoughtful responsive strategy.
+
+Desktop:
+- full timeline
+- longer scroll distance
+- wider camera arcs
+- richer composition
+
+Tablet:
+- medium scroll distance
+- somewhat simplified camera path
+- less aggressive spacing
+
+Mobile:
+- shorter pinned duration
+- simplified camera choreography
+- fewer simultaneous child animations
+- stronger focus on text legibility
+
+Do not try to make desktop and mobile identical.
+Preserve the story while simplifying the implementation.
+
+===============================================================================
+31. REDUCED MOTION STRATEGY
+===============================================================================
+
+Optionally include a reduced motion fallback.
+
+If reduced motion is preferred:
+- disable or simplify Lenis
+- use less dramatic camera motion
+- reduce object movement
+- keep layout functional and elegant
+
+This does not need to be perfect in v1 but should be architecturally possible.
+
+===============================================================================
+32. DEBUGGING AND EDITABILITY
+===============================================================================
+
+The project must be easy to debug and tune.
+
+Requirements:
+- debug flag for ScrollTrigger markers
+- centralized scroll distance config
+- centralized camera keyframe config
+- centralized object transform config
+- comments showing where to replace primitives with future GLB assets
+- comments showing where to tune narrative pacing
+
+The code should feel like a toolkit, not a hardcoded demo trap.
+
+===============================================================================
+33. CONFIG-DRIVEN ANIMATION ARCHITECTURE
+===============================================================================
+
+Create a config-driven setup.
+
+Example config categories:
+
+animationConfig = {
+  debug: {
+    showMarkers: false
+  },
+  scroll: {
+    desktopDistance: 7000,
+    tabletDistance: 5500,
+    mobileDistance: 4000
+  },
+  labels: {
+    intro: 0,
+    approach: 0.2,
+    reveal: 0.42,
+    scale: 0.68,
+    cta: 0.86
+  },
+  camera: {
+    ...
+  },
+  object: {
+    ...
+  },
+  lights: {
+    ...
+  }
+}
+
+The code should read values from config instead of scattering magic numbers everywhere.
+
+===============================================================================
+34. OBJECT KEYFRAME CONFIG EXAMPLE
+===============================================================================
+
+Create a clear object keyframe model.
+
+Example:
+
+objectKeyframes = {
+  intro: {
+    rootRotation: [0.0, 0.1, 0.0],
+    rootPosition: [0, 0, 0],
+    ringOffsetY: 0,
+    accentSpread: 0.2
+  },
+  approach: {
+    rootRotation: [0.0, 0.45, 0.0],
+    rootPosition: [0.15, 0.1, 0],
+    ringOffsetY: 0.1,
+    accentSpread: 0.25
+  },
+  reveal: {
+    rootRotation: [0.1, 1.2, 0.0],
+    rootPosition: [0.2, 0.2, 0],
+    ringOffsetY: 0.6,
+    accentSpread: 0.8
+  },
+  scale: {
+    rootRotation: [-0.1, 1.65, 0.0],
+    rootPosition: [-0.2, 0.45, 0],
+    ringOffsetY: 0.9,
+    accentSpread: 1.1
+  },
+  cta: {
+    rootRotation: [0.0, 2.2, 0.0],
+    rootPosition: [0, 0.12, 0],
+    ringOffsetY: 0.3,
+    accentSpread: 0.4
+  }
+}
+
+Actual implementation can vary, but keep the same clarity.
+
+===============================================================================
+35. LIGHTING TRANSITION CONFIG EXAMPLE
+===============================================================================
+
+Light config can be animated subtly.
+
+Example:
+
+lightKeyframes = {
+  intro: {
+    ambient: 0.6,
+    key: 1.5,
+    rim: 1.1
+  },
+  approach: {
+    ambient: 0.55,
+    key: 1.7,
+    rim: 1.25
+  },
+  reveal: {
+    ambient: 0.5,
+    key: 1.9,
+    rim: 1.4
+  },
+  scale: {
+    ambient: 0.45,
+    key: 2.0,
+    rim: 1.5
+  },
+  cta: {
+    ambient: 0.58,
+    key: 1.7,
+    rim: 1.2
+  }
+}
+
+Keep lighting animation subtle. Avoid obviously fake intensity pulsing.
+
+===============================================================================
+36. TYPESCRIPT QUALITY REQUIREMENTS
+===============================================================================
+
+Use TypeScript correctly.
+
+Requirements:
+- typed refs where practical
+- typed config structures
+- typed prop interfaces
+- avoid unnecessary any
+- keep types readable
+
+Do not over-engineer the types, but do not leave everything untyped either.
+
+===============================================================================
+37. CODE STYLE REQUIREMENTS
+===============================================================================
+
+The generated code should be:
+- modular
+- readable
+- commented
+- realistic
+- maintainable
+
+Avoid:
+- giant 800-line components
+- mysterious magic numbers everywhere
+- duplicated animation logic
+- fragile selector-based DOM code
+- tangled scene setup
+
+===============================================================================
+38. EXPECTED MINIMUM WORKING OUTPUT
+===============================================================================
+
+The preview should show:
+
+- fullscreen dark landing page
+- pinned R3F Canvas
+- primitive 3D sculpture
+- smooth scroll behavior
+- ScrollTrigger scrub
+- camera movement linked to scroll
+- group/object transforms linked to scroll
+- multiple overlay narrative sections
+- premium-feeling composition
+
+If all of that works, the prototype is successful.
+
+===============================================================================
+39. NOT REQUIRED IN VERSION 1
+===============================================================================
+
+Do NOT spend effort on these yet:
+
+- imported GLB assets
+- postprocessing stack
+- texture baking pipeline
+- user auth
+- ecommerce checkout
+- CMS integration
+- advanced text split animation
+- complex shaders
+- full mobile perfection
+- analytics
+- SEO deep work
+
+Focus on the cinematic prototype only.
+
+===============================================================================
+40. FUTURE UPGRADE PATH
+===============================================================================
+
+Architect the prototype so it can later support:
+
+- GLB / GLTF model via useGLTF
+- environment maps
+- postprocessing
+- advanced typography
+- CMS-driven story sections
+- route transitions
+- product detail storytelling
+- alternate scene themes
+- shader-based highlights
+- richer motion systems
+
+Version 1 should make those upgrades easier, not harder.
+
+===============================================================================
+41. GLB REPLACEMENT STRATEGY LATER
+===============================================================================
+
+When upgrading later:
+- replace the primitive sculpture root with a loaded GLB group
+- keep camera system intact
+- keep timeline architecture intact
+- keep ScrollTrigger intact
+- retarget tweens to model parts or named groups
+- preload asset if needed
+
+The current architecture should already anticipate this.
+
+===============================================================================
+42. COMMON FAILURE CASES TO AVOID
+===============================================================================
+
+Avoid these mistakes:
+
+1. Multiple Lenis instances
+2. Multiple duplicated ScrollTriggers on rerender
+3. Camera lookAt not updating correctly
+4. Scroll pin wrapper with broken height or overflow
+5. Too-short scroll distance causing rushed motion
+6. Too many independent triggers fighting each other
+7. Scene logic mixed with page layout logic
+8. Magic numbers scattered everywhere
+9. Overly bright lighting flattening the scene
+10. Primitive layout with no silhouette or hierarchy
+11. Mobile view reusing desktop camera path with bad framing
+12. useFrame doing everything instead of GSAP
+13. No cleanup of tickers, listeners, or triggers
+14. Overly flashy effects that cheapen the prototype
+15. DOM overlay text becoming unreadable over scene
+
+===============================================================================
+43. CODING APPROACH ORDER
+===============================================================================
+
+Build in this order:
+
+Phase 1:
+- project scaffold
+- package setup
+- global styles
+- basic page shell
+
+Phase 2:
+- fullscreen Canvas
+- simple primitive sculpture
+- camera rig
+- lighting
+
+Phase 3:
+- Lenis provider
+- ScrollTrigger setup
+- pinned wrapper
+- master timeline
+
+Phase 4:
+- overlay narrative sections
+- spacing rhythm
+- section readability
+
+Phase 5:
+- config extraction
+- debug toggle
+- responsive adjustments
+
+Phase 6:
+- comments and cleanup
+- polish composition
+- verify stability
+
+===============================================================================
+44. RENDER PERFORMANCE RULES
+===============================================================================
+
+Even in prototype mode:
+- avoid excessive draw calls
+- avoid too many dynamic shadows
+- avoid expensive transparency stacks
+- avoid unnecessary rerenders
+- avoid creating new objects every frame when not needed
+
+Prefer:
+- grouped transforms
+- shared materials where practical
+- restrained motion
+- stable refs
+- low complexity with high composition quality
+
+===============================================================================
+45. Z-INDEX / LAYERING MODEL
+===============================================================================
+
+Layering should be intentional.
+
+Suggested model:
+- page background at bottom
+- pinned Canvas layer above background
+- subtle overlay gradients if needed
+- text overlay sections above Canvas
+- optional CTA card highest
+
+Ensure pointer-events are correct if needed.
+Ensure overlay text remains selectable/readable if desirable.
+
+===============================================================================
+46. CSS LAYOUT GUIDELINES
+===============================================================================
+
+Potential CSS structure:
+- page root min-height large enough
+- pinned scene wrapper relative
+- Canvas absolutely positioned or fixed inside wrapper
+- overlay sections position relative with z-index above Canvas
+
+Protect against:
+- accidental horizontal overflow
+- pin spacing bugs
+- text clipping
+- mobile viewport height issues
+
+Use modern CSS but keep it understandable.
+
+===============================================================================
+47. CTA DESIGN REQUIREMENTS
+===============================================================================
+
+The final CTA section should feel like the payoff.
+
+Requirements:
+- strong final heading
+- short supporting copy
+- one or two button placeholders
+- premium spacing
+- scene lands in a composed final frame behind it
+
+Do not make the CTA flashy or salesy in a cheap way.
+
+===============================================================================
+48. PLACEHOLDER COPY STYLE
+===============================================================================
+
+Use polished placeholder copy.
+
+Tone:
+- precise
+- calm
+- premium
+- modern
+- confident
+
+Avoid:
+- cheesy marketing hype
+- meme language
+- generic startup jargon overload
+- long walls of text
+
+Keep it short and cinematic.
+
+===============================================================================
+49. OPTIONAL PLACEHOLDER COPY EXAMPLE
+===============================================================================
+
+Hero:
+Eyebrow: Designed for motion
+Title: Scroll through the reveal
+Body: A cinematic product-story prototype built from light, geometry, and timing.
+
+Section 1:
+Title: Shape the first impression
+Body: Start with a restrained silhouette and let the camera do the storytelling.
+
+Section 2:
+Title: Reveal with intention
+Body: Separate the structure in stages so every movement feels earned.
+
+Section 3:
+Title: Build atmosphere, not noise
+Body: Use light, spacing, and depth to create scale without clutter.
+
+Final CTA:
+Title: Turn motion into narrative
+Body: The architecture is ready for real assets, deeper polish, and production storytelling.
+
+===============================================================================
+50. DELIVERABLE FORMAT REQUIREMENTS
+===============================================================================
+
+Generate all required files with code, not pseudo-code.
+
+The output should be:
+- runnable
+- organized
+- commented
+- logically complete
+
+Where brevity is necessary, prioritize correctness of architecture over decorative extras.
+
+===============================================================================
+51. FINAL TASK SUMMARY FOR CODEX
+===============================================================================
+
+Build a real working Next.js App Router scrollytelling prototype with:
+- TypeScript
+- React Three Fiber
+- Drei
+- GSAP
+- ScrollTrigger
+- Lenis
+- fullscreen pinned Canvas
+- primitive-based premium sculpture
+- cinematic camera path
+- config-driven animation system
+- modular components
+- overlay narrative sections
+- responsive simplification
+- clean cleanup and editability
+
+Focus on:
+- architecture
+- readability
+- scroll choreography
+- premium feel
+
+Do not focus on:
+- imported assets
+- effects overload
+- production backend features
+
+===============================================================================
+52. SHORTER EXECUTION CHECKLIST
+===============================================================================
+
+Before finalizing the generated code, ensure:
+- the app runs
+- the Canvas renders
+- the pinned section works
+- Lenis and ScrollTrigger are synchronized
+- the timeline scrubs correctly
+- camera moves through keyframes
+- object groups animate
+- text sections remain readable
+- config values are easy to edit
+- cleanup is implemented
+
+===============================================================================
+53. MINI BLUEPRINT OF IMPLEMENTATION FLOW
+===============================================================================
+
+1. Build page shell
+2. Add SmoothScrollProvider
+3. Add pinned ScrollScene wrapper
+4. Create Canvas
+5. Create primitive sculpture in SceneContents
+6. Add CameraRig with mutable target
+7. Create animation config
+8. Build GSAP master timeline
+9. Connect timeline to ScrollTrigger
+10. Add overlay sections
+11. Add responsive adjustments
+12. Add comments and cleanup
+
+===============================================================================
+54. FINAL INSTRUCTION
+===============================================================================
+
+Write the code as a strong, realistic starter project that a developer could
+immediately run, inspect, and continue building on. Keep it elegant, modular, and
+easy to tune. The first preview should already look premium despite using only
+primitive geometry.
