@@ -63,12 +63,13 @@ export function ScrollScene() {
       { y: Math.PI * 1.7, x: Math.PI * 0.35, z: Math.PI * 0.12 },
       0
     );
-    timeline.to(innerCluster.current?.rotation ?? {}, { x: Math.PI * 2.4, y: Math.PI * 1.4 }, 1);
-    timeline.to(innerCluster.current?.position ?? {}, { y: -0.28 }, 1.7);
-    timeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 1.35, y: Math.PI * 0.45 }, 2);
-    timeline.to(haloRing.current?.scale ?? {}, { x: 1.45, y: 1.45, z: 1 }, 2.3);
-    timeline.to(accentLight.current ?? {}, { intensity: 1.4 }, 2.6);
-    timeline.to(accentLight.current ?? {}, { intensity: 0.35 }, 3.8);
+    timeline.to(innerCluster.current?.rotation ?? {}, { x: Math.PI * 2.8, y: Math.PI * 1.9, z: Math.PI * 0.45 }, 0.8);
+    timeline.to(innerCluster.current?.position ?? {}, { y: -0.35, x: 0.12 }, 1.4);
+    timeline.to(haloRing.current?.rotation ?? {}, { z: Math.PI * 1.6, y: Math.PI * 0.8, x: Math.PI * 0.35 }, 1.7);
+    timeline.to(haloRing.current?.scale ?? {}, { x: 1.65, y: 1.65, z: 1.1 }, 2.2);
+    timeline.to(sculptureRoot.current?.position ?? {}, { y: 0.18, x: -0.1 }, 2.5);
+    timeline.to(accentLight.current ?? {}, { intensity: 2 }, 2.6);
+    timeline.to(accentLight.current ?? {}, { intensity: 0.75 }, 3.8);
 
     const trigger = ScrollTrigger.create({
       trigger: rootRef.current,
